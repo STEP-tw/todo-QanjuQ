@@ -16,7 +16,7 @@ const filepaths = {
   'gif':'/images',
   'ico':'/images',
   'css':'/styles',
-  'js':'/scripts',
+  'js':'/js',
   'jpg':'/images',
   'png':'/images',
   'svg':'/images'

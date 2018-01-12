@@ -49,17 +49,14 @@ const use = function(handler,atWhatTime){
   this[atWhatTime].push(handler);
 }
 
-const bindResponse = function(){
+const bindWithResponse = function(){
   this.redirect = handler.redirect;
   this.resourceFoundHandler = handler.resourceFoundHandler;
   this.resourceNotFoundHandler = handler.resourceNotFoundHandler;
 }
 
 const main = function(req,res){
-  // res.redirect = redirect.bind(res);
-  let bindWithResponse = bindResponse.bind(res);
-  bindWithResponse();
-  console.log(res.setHeader);
+  bindWithResponse.call(res);
   req.cookies = parseCookies(req.headers.cookie || '');
   let content="";
   req.on('data',data=>content+=data.toString());
@@ -74,19 +71,6 @@ const main = function(req,res){
     invoke.call(this,req,res);
   });
 }
-
-// const resourceNotFoundHandler = (res)=>{
-//   res.statusCode = 404;
-//   res.write("<h1>File Not Found</h1>");
-//   res.end();
-// }
-//
-// const resourceFoundHandler = (res,contentType,content)=>{
-//   res.statusCode = 200;
-//   res.setHeader('ContentType',contentType);
-//   res.write(content);
-//   res.end();
-// }
 
 let create = ()=>{
   let rh = (req,res)=>{

@@ -47,5 +47,9 @@ app.get('/',(req,res)=>{
   res.redirect('/index.html');
 });
 
+app.get('/login',(req,res)=>{
+  res.write(<form></form>)
+})
+
 
 exports.app = app;
