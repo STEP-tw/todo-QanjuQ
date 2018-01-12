@@ -64,7 +64,7 @@ app.post('/login.html',(req,res)=>{
 });
 
 app.get('/logout',(req,res)=>{
-  res.setHeader('Set-Cookie','login=false');
+  res.setHeader('Set-Cookie',`login=false,Expires=${new Date().toUTCString()}`);
   res.redirect('/index.html');
 });
 
@@ -76,11 +76,11 @@ app.get('/todos',(req,res)=>{
 app.post('/create',(req,res)=>{
   let title = req.body.title;
   let name = 'Anjum';
-  userDetails[name][title] = `./public/data/${name}/${title}.json`;
-  fs.writeFileSync(toS('./public/data/users.json'),userDetails);
-  fs.openSync(`./public/data/${name}/${title}.json`,'w+');
+  userDetails[name].todos[title] = `./public/data/${name}/${title}.json`;
+  fs.writeFileSync('./public/data/users.json',toS(userDetails));
   let todo = {title:title,description:''};
-  fs.writeFileSync(todo.toString());
+  fs.openSync(`./public/data/${name}/${title}.json`,'w+');
+  fs.writeFileSync(`./public/data/${name}/${title}.json`,toS(todo));
   res.statusCode = 200;
   res.end();
 });

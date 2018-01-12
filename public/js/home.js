@@ -1,8 +1,9 @@
 let parseData = function(data){
-  data = JSON.parse(data);
+  console.log(data);
   let keys = Object.keys(data);
   let todos = '';
   keys.forEach((key)=>{
+    
   });
 }
 
@@ -16,13 +17,13 @@ const createTodo = function(){
   todo.addEventListener('load',changeDiv);
   todo.open('POST','create');
   let title = document.getElementsByName('title')[0].value;
-  todo.send(`{name:${title}}`);
+  todo.send(`title=${title}`);
 }
 
 const addListener =function(){
   createRequest();
   document.getElementById('create').onclick = createTodo;
-  document.getElementById('delete').onclick = deleteTodo;
+  // document.getElementById('delete').onclick = deleteTodo;
 }
 
 let createRequest = function(){

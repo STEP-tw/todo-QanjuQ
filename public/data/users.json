@@ -1,5 +1,7 @@
 {
   "Anjum": {
-    "todos": {}
+    "todos": {
+      "sasa": "./public/data/Anjum/sasa.json"
+    }
   }
 }
