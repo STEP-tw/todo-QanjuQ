@@ -5,8 +5,9 @@ const WebApp = require('./webapp');
 let registered_users = [{userName:'Anju',name:'anjum'}];
 const toS = o=>JSON.stringify(o,null,2);
 
-let userDetails = {'Anjum':{todos:{}}};
-fs.writeFileSync('./public/data/users.json',toS(userDetails));
+let userDetails = fs.readFileSync('./public/data/users.json','utf8');
+console.log(userDetails);
+userDetails = JSON.parse(userDetails);
 
 const logRequest = (req,res)=>{
   let text = ['<<<<<<==============================>>>>>>>',
@@ -69,9 +70,10 @@ app.get('/logout',(req,res)=>{
 });
 
 app.get('/todos',(req,res)=>{
-  res.write(userDetails['Anjum'].todos.toString());
+  console.log(toS(userDetails["Anjum"]["todos"]));
+  res.write(toS(userDetails["Anjum"]["todos"]));
   res.end();
-})
+});
 
 app.post('/create',(req,res)=>{
   let title = req.body.title;

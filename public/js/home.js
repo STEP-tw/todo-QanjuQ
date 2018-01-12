@@ -1,9 +1,15 @@
 let parseData = function(data){
-  console.log(data);
+  data =JSON.parse(data,null,2);
   let keys = Object.keys(data);
+  let list = document.getElementById('todos');
   let todos = '';
+  console.log(keys);
   keys.forEach((key)=>{
-    
+    let todo = document.createElement('a');
+    todo.innerHTML =  key + "<br/>";
+    todo.id = key + ".json";
+    todo.href = key + ".json";
+    list.appendChild(todo);
   });
 }
 

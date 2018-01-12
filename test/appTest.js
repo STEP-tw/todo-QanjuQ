@@ -39,7 +39,17 @@ describe('app',()=>{
       request(app,{method:'POST',url:'/login.html',body:'username=Anju&password="hello"'},res=>{
         th.should_be_redirected_to(res,'/home.html');
         th.should_have_cookie(res,'login',true);
-        assert.equal(res.body,"");
+        assert.equal(res.body,'');
+        done();
+      })
+    })
+  })
+  describe('GET /todos',()=>{
+    it('should return a object of todos and links',done=>{
+      request(app,{method:'GET',url:'/todos'},res=>{
+        th.status_is_ok(res);
+        assert.notEqual(`{hello: ./public/data/Anjum/hello.json,
+        helloq: ./public/data/Anjum/helloq.json}`,res.body);
         done();
       })
     })

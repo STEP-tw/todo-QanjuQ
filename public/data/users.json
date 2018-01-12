@@ -1,7 +1,8 @@
 {
   "Anjum": {
     "todos": {
-      "sasa": "./public/data/Anjum/sasa.json"
+      "hello": "./public/data/Anjum/hello.json",
+      "helloq": "./public/data/Anjum/helloq.json"
     }
   }
 }
