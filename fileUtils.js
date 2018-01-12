@@ -57,6 +57,7 @@ fileUtils.serveImage = function(filepath,callBack){
 }
 
 fileUtils.serveFile = function(filepath,callBack){
+  console.log(filepath,"a");
   fs.readFile(filepath,'utf8',callBack);
 }
 

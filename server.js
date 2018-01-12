@@ -1,7 +1,6 @@
 let fs = require('fs');
 const fileUtils = require('./fileUtils.js').fileUtils;
 const timeStamp = require('./time.js').timeStamp;
-const http = require('http');
 const WebApp = require('./webapp');
 let registered_users = [{userName:'anju',name:'anjum'}];
 const toS = o=>JSON.stringify(o,null,2);
@@ -31,8 +30,8 @@ const respondWithFile = function(req,res){
       res.resourceNotFoundHandler();
       return;
     }
-    res.resourceNotFoundHandler(req.contentType,data);
-  }
+    res.resourceFoundHandler(req.contentType,data);
+  };
   fileUtils.readFile(req.filepath,callBack);
 }
 
@@ -50,8 +49,3 @@ app.get('/',(req,res)=>{
 
 
 exports.app = app;
-
-// const PORT = 5000;
-// let server = http.createServer(app);
-// server.on('error',e=>console.error('**error**',e.message));
-// server.listen(PORT,(e)=>console.log(`server listening at ${PORT}`));

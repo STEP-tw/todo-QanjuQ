@@ -6,7 +6,7 @@ handler.resourceNotFoundHandler = function(){
   this.end();
 }
 
-handler.resourceFoundHandler = (contentType,content)=>{
+handler.resourceFoundHandler = function(contentType,content){
   this.statusCode = 200;
   this.setHeader('Content-Type',contentType);
   this.write(content);

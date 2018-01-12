@@ -5,6 +5,7 @@ process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../server.js').app;
 let th = require('./testHelper.js');
 
+
 describe('app',()=>{
   describe('GET /bad',()=>{
     it('responds with 404',done=>{
@@ -28,7 +29,7 @@ describe('app',()=>{
       request(app,{method:'GET',url:'/index.html'},res=>{
         th.status_is_ok(res);
         th.content_type_is(res,'text/html');
-        th.body_contains(res,'Flower Catalog Website');
+        th.body_contains(res,'ToDo APP');
         done();
       })
     })

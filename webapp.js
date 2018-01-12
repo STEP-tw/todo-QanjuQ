@@ -49,7 +49,7 @@ const use = function(handler,atWhatTime){
   this[atWhatTime].push(handler);
 }
 
-const bindWithResponse = function(){
+const bindResponse = function(){
   this.redirect = handler.redirect;
   this.resourceFoundHandler = handler.resourceFoundHandler;
   this.resourceNotFoundHandler = handler.resourceNotFoundHandler;
@@ -57,7 +57,9 @@ const bindWithResponse = function(){
 
 const main = function(req,res){
   // res.redirect = redirect.bind(res);
-  bindWithResponse.call(res);
+  let bindWithResponse = bindResponse.bind(res);
+  bindWithResponse();
+  console.log(res.setHeader);
   req.cookies = parseCookies(req.headers.cookie || '');
   let content="";
   req.on('data',data=>content+=data.toString());
