@@ -2,8 +2,11 @@ let fs = require('fs');
 const fileUtils = require('./fileUtils.js').fileUtils;
 const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
-let registered_users = [{userName:'anju',name:'anjum'}];
+let registered_users = [{userName:'Anju',name:'anjum'}];
 const toS = o=>JSON.stringify(o,null,2);
+
+let userDetails = {'Anjum':{todos:{}}};
+fs.writeFileSync('./public/data/users.json',toS(userDetails));
 
 const logRequest = (req,res)=>{
   let text = ['<<<<<<==============================>>>>>>>',
@@ -35,6 +38,9 @@ const respondWithFile = function(req,res){
   fileUtils.readFile(req.filepath,callBack);
 }
 
+let redirectLoggedinUserToHome = function(req){
+}
+
 let app = WebApp.create();
 app.use(logRequest,'_preprocess');
 app.use(loadUser,'_preprocess');
@@ -47,9 +53,37 @@ app.get('/',(req,res)=>{
   res.redirect('/index.html');
 });
 
-app.get('/login',(req,res)=>{
-  res.write(<form></form>)
+app.post('/login.html',(req,res)=>{
+  let user = registered_users.find(user=>user.userName == req.body.username);
+  console.log(req.cookies.login);
+  if(user || (!req.cookies.login)){
+    res.setHeader('Set-Cookie','login=true')
+    res.redirect('/home.html');
+  }
+  res.end("please login");
+});
+
+app.get('/logout',(req,res)=>{
+  res.setHeader('Set-Cookie','login=false');
+  res.redirect('/index.html');
+});
+
+app.get('/todos',(req,res)=>{
+  res.write(userDetails['Anjum'].todos.toString());
+  res.end();
 })
+
+app.post('/create',(req,res)=>{
+  let title = req.body.title;
+  let name = 'Anjum';
+  userDetails[name][title] = `./public/data/${name}/${title}.json`;
+  fs.writeFileSync(toS('./public/data/users.json'),userDetails);
+  fs.openSync(`./public/data/${name}/${title}.json`,'w+');
+  let todo = {title:title,description:''};
+  fs.writeFileSync(todo.toString());
+  res.statusCode = 200;
+  res.end();
+});
 
 
 exports.app = app;

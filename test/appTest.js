@@ -34,4 +34,14 @@ describe('app',()=>{
       })
     })
   })
+  describe('POST /login.html',()=>{
+    it("redirects to home page by setting cookie",done=>{
+      request(app,{method:'POST',url:'/login.html',body:'username=Anju&password="hello"'},res=>{
+        th.should_be_redirected_to(res,'/home.html');
+        th.should_have_cookie(res,'login',true);
+        assert.equal(res.body,"");
+        done();
+      })
+    })
+  })
 })
