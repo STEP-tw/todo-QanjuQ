@@ -6,7 +6,6 @@ let registered_users = [{userName:'Anju',name:'anjum'}];
 const toS = o=>JSON.stringify(o,null,2);
 
 let userDetails = fs.readFileSync('./public/data/users.json','utf8');
-console.log(userDetails);
 userDetails = JSON.parse(userDetails);
 
 const logRequest = (req,res)=>{
@@ -34,13 +33,18 @@ const respondWithFile = function(req,res){
       res.resourceNotFoundHandler();
       return;
     }
+    if(fileUtils.isJsonFile(req.filepath)){
+      data = JSON.parse(data);
+    }
     res.resourceFoundHandler(req.contentType,data);
   };
   fileUtils.readFile(req.filepath,callBack);
 }
 
-let redirectLoggedinUserToHome = function(req){
-}
+let writeJsonFile = function(filepath,content){
+  fs.writeFile(filepath,toS(content),(err)=>{
+    if(err) throw err; });
+};
 
 let app = WebApp.create();
 app.use(logRequest,'_preprocess');
@@ -70,7 +74,6 @@ app.get('/logout',(req,res)=>{
 });
 
 app.get('/todos',(req,res)=>{
-  console.log(toS(userDetails["Anjum"]["todos"]));
   res.write(toS(userDetails["Anjum"]["todos"]));
   res.end();
 });
@@ -79,10 +82,10 @@ app.post('/create',(req,res)=>{
   let title = req.body.title;
   let name = 'Anjum';
   userDetails[name].todos[title] = `./public/data/${name}/${title}.json`;
-  fs.writeFileSync('./public/data/users.json',toS(userDetails));
+  writeJsonFile('./public/data/users.JSON',userDetails);
   let todo = {title:title,description:''};
-  fs.openSync(`./public/data/${name}/${title}.json`,'w+');
-  fs.writeFileSync(`./public/data/${name}/${title}.json`,toS(todo));
+  fs.openSync(`./public/data/${name}/${title}.JSON`,'w+');
+  writeJsonFile(`./public/data/${name}/${title}.json`,todo);
   res.statusCode = 200;
   res.end();
 });

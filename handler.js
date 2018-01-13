@@ -20,4 +20,18 @@ handler.redirect = function(path){
   this.end();
 }
 
+// handler.respond = function(err,data){
+//   if(err){
+//     res.resourceNotFoundHandler();
+//     return;
+//   }
+//   if(fileUtils.isJson(req.filepath)){
+//     data = JSON.parse(data);
+//   }
+//   res.resourceFoundHandler(req.contentType,data);
+// }
+
+
+
+
 exports.handler = handler;
