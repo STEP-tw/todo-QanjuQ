@@ -16,6 +16,9 @@ class Item{
   changeStatus(){
     this.done = !this.done;
   }
+  isTitleSameAs(title){
+    return this.title == title;
+  }
 }
 
 module.exports = Item;

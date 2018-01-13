@@ -18,18 +18,29 @@ class Todo{
   }
 
   createItem(title,content){
+    let item = this.getItemWithTitle(title);
+    if(item){
+      let itemKey = Object.keys(item);
+      this.items[itemKey] = new Item(title,content);
+      return;
+    }
     this.items[++this.itemId] = new Item(title,content);
   }
-
   getItemWithTitle(title){
     let itemKeys = Object.keys(this.items);
-    itemKeys.forEach()
-
+    let itemToDelete;
+    let items = this.getItems();
+    itemKeys.forEach((key)=>{
+      if(items[key].isTitleSameAs(title)){
+        itemToDelete = {[key]:items[key]};
+      }
+    });
+    return itemToDelete;
   }
 
   deleteItem(title){
-    let itemToDelete = this.items.find(item => item.getTitle() == title)
-    delete this.items[itemToDelete.getTitle()];
+    let itemKey = Object.keys(this.getItemWithTitle(title));
+    delete this.items[itemKey];
   }
 
   getItems(){

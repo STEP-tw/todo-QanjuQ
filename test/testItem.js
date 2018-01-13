@@ -31,4 +31,14 @@ describe('Item',()=>{
       assert.isOk(item.getStatus());
     });
   });
+  describe('isTitleSameAs()',()=>{
+    it('returns true if title is equal to given title',()=>{
+      let item = new Item('a','hello');
+      assert.isOk(item.isTitleSameAs('a'));
+    });
+    it('returns false if title is equal to given title',()=>{
+      let item = new Item('b','hello');
+      assert.isNotOk(item.isTitleSameAs('a'));
+    });
+  })
 });
