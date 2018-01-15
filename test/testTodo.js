@@ -1,6 +1,36 @@
 let assert = require('chai').assert;
+
 let Item = require('../lib/Item.js');
 let Todo = require('../lib/todo.js');
+let User = require('../lib/user.js');
+
+describe('User',()=>{
+  describe('user.createTodo()',()=>{
+    it('creating new todo',()=>{
+      let user = new User('Anju','Anjum Qureshi','1234');
+      user.createTodo("Todo for today");
+      assert.deepEqual(user.todos,{"Todo for today":new Todo("Todo for today")});
+    });
+    it('getting existing todo',()=>{
+      let user = new User('Anju','Anjum Qureshi','1234');
+      user.createTodo("Todo for today");
+      let actual = user.getTodo("Todo for today");
+      assert.deepEqual(new Todo("Todo for today"),actual);
+    });
+    it('delete todo',()=>{
+      let user = new User('Anju','Anjum Qureshi','1234');
+      user.createTodo("Todo for today");
+      user.deleteTodo("Todo for today");
+      assert.deepEqual(user.todos,{});
+    });
+    it('getting a list of todos',()=>{
+      let user = new User('Anju','Anjum Qureshi','1234');
+      user.createTodo("Todo for today");
+      user.createTodo("Todo for Todo App");
+      assert.deepEqual(user.getListOfTodos(),["Todo for today","Todo for Todo App"]);
+    })
+  });
+});
 
 describe('Todo',()=>{
   describe('creating new Todo',()=>{
@@ -10,7 +40,6 @@ describe('Todo',()=>{
       assert.notEqual(todo.getTitle(),"");
       assert.equal(todo.getDescription(),"");
       assert.deepEqual(todo.getItems(),{});
-      assert.equal(todo.src,'./hello.JSON');
     });
   });
   describe('todo.createItem()',()=>{
@@ -18,7 +47,6 @@ describe('Todo',()=>{
       let todo = new Todo('hello');
       todo.createItem('item1',"hii");
       let expected = new Item('item1',"hii");
-      console.log(expected);
       assert.deepEqual(todo.getItems(),{1:expected});
     });
     it('creating two items in todo with title item1,item2',()=>{
