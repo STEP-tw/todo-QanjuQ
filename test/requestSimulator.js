@@ -16,7 +16,7 @@ let request = function(app,options,onComplete){
       };
       onComplete(result);
     },
-    setHeader:(key,value)=> res_headers[key] = value,
+    setHeader:(key,value)=>res_headers[key] = value,
     write:(text)=>res_contents+=text
   };
   app(req,res);

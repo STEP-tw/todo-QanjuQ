@@ -1,1 +1,16 @@
-{}
+[
+  {
+    "username": "anju",
+    "name": "Anjum Qureshi",
+    "password": "0000",
+    "todos": {},
+    "dir": "./public/data/anju"
+  },
+  {
+    "username": "anjum",
+    "name": "Anjum Qureshi",
+    "password": "0000",
+    "todos": {},
+    "dir": "./public/data/anjum"
+  }
+]
