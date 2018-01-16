@@ -18,24 +18,15 @@ const changeDiv = function(){
 }
 
 const createTodo = function(){
-  let todo = new XMLHttpRequest();
-  todo.addEventListener('load',changeDiv);
-  todo.open('POST','create');
   let title = document.getElementsByName('title')[0].value;
-  todo.send(`title=${title}`);
+  createRequest('POST','createTodo',changeDiv,`title=${title}`);
 }
 
 const addListener =function(){
-  createRequest();
+  createRequest('GET','todos',changeDiv);
   document.getElementById('create').onclick = createTodo;
+  addLogoutListener();
   // document.getElementById('delete').onclick = deleteTodo;
-}
-
-let createRequest = function(){
-  let todos = new XMLHttpRequest();
-  todos.addEventListener('load',changeDiv);
-  todos.open('GET','todos');
-  todos.send();
 }
 
 window.onload = addListener;

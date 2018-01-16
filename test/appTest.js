@@ -74,6 +74,7 @@ describe('app',()=>{
         th.should_have_expiring_cookie(res,'login','false');
         th.should_be_redirected_to(res,'/index.html');
       })
+      done();
     })
 
   })

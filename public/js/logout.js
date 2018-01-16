@@ -1,11 +1,11 @@
-const createRequest = function(){
-  let logout = new XMLHttpRequest();
-  logout.open('GET','logout');
-  logout.send();
+const logout = function(){
+  createRequest('GET','logout',logoutAlert);
+};
+
+const logoutAlert = function(){
+  alert('you logged out');
 }
 
-const addListener = function(){
-  document.getElementById('logout').onclick = createRequest;
+const addLogoutListener = function(){
+  document.getElementById('logout').onclick = logout;
 }
-
-window.onload = addListener;

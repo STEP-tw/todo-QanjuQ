@@ -72,13 +72,12 @@ app.use(fileUtils.getContentType,'_postprocess');
 app.get('/',handlers.handleSlash);
 app.get('/logout',handlers.userLogout);
 app.get('/todos',handlers.getTodoLists);
+app.get('/login',handlers.serveLoginForm);
 app.post('/login',(req,res)=>{
   handlers.userLogin(req,res,getUsersList());
 });
 app.post('/createTodo',handlers.createTodo);
 
 loadData();
-// registerUser('Anjum Qureshi','anju',0000);
-// registerUser('Anjum Qureshi','anjum',0000);
 
 exports.app = app;
