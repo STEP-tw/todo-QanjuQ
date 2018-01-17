@@ -3,14 +3,18 @@
     "username": "anju",
     "name": "Anjum Qureshi",
     "password": "0000",
-    "todos": {},
-    "dir": "./public/data/anju"
+    "todos": {
+      "hello": "2018-1-17 19:02:44"
+    },
+    "dir": "./public/data/anju",
+    "sessionid": "100001"
   },
   "anjum": {
     "username": "anjum",
     "name": "Anjum K",
     "password": "0000",
     "todos": {},
-    "dir": "./public/data/anjum"
+    "dir": "./public/data/anjum",
+    "sessionid": "0"
   }
 }

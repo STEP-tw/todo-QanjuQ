@@ -4,6 +4,7 @@ const User = require('./lib/user.js');
 const handlers = require('./lib/handlers.js');
 const fileUtils = require('./lib/fileUtils.js');
 const WebApp = require('./lib/webapp');
+const users = require('./lib/users.js').create();
 
 const toS = o=>JSON.stringify(o,null,2);
 
@@ -23,22 +24,11 @@ const logger = (req,res)=>{
   console.log(`${req.method} ${req.url}`);
 }
 
-const getUsersList = function(){
-  let users = fs.readFileSync('./public/data/users.json');
-  return JSON.parse(users);
-}
-
 const loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
-  // console.log(sessionid);
-  let users = getUsersList();
-  let present_users = Object.keys()
-  let username = present_users.filter(username=>{
-    return users[username].sessionid = sessionid;
-  });
-  let activeUser = users[username[0]];
-  if(sessionid && activeuser){
-    req.user = activeUser;
+  let user = users.getParticularUser('sessionid',sessionid);
+  if(sessionid && user){
+    req.user = user;
   }
 };
 
@@ -59,8 +49,9 @@ let loadData = function(){
 }
 
 const redirectLoggedinUsersToHome = function(req,res){
-  if(['/login','/','/index.html'].includes(req.url) && req.user)
+  if(['/login','/'].includes(req.url) && req.user){
     res.redirect('/home.html');
+  }
 }
 
 
@@ -76,10 +67,7 @@ app.get('/',handlers.handleSlash);
 app.get('/logout',handlers.userLogout);
 app.get('/todos',handlers.getTodoLists);
 app.get('/login',handlers.getLogin);
-app.post('/login',(req,res)=>{
-  let users = handlers.postLogin(req,res,getUsersList());
-  fs.writeFileSync(users);
-});
+app.post('/login',handlers.postLogin);
 app.post('/createTodo',handlers.createTodo);
 
 loadData();

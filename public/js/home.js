@@ -1,20 +1,19 @@
-let parseData = function(data){
-  data = JSON.parse(data,null,2);
-  let keys = Object.keys(data);
-  let list = document.getElementById('todos');
-  let todos = '';
-  keys.forEach((key)=>{
-    let todo = document.createElement('a');
-    todo.innerHTML =  key + "<br/>";
-    todo.id = key + ".JSON";
-    todo.href = "todohtml"+key+".JSON";
-    list.appendChild(todo);
+let parseData = function(todoslist){
+  let li = "";
+  todoslist.forEach(function(todoTitle){
+    li += `<li>${createTodoLink(todoTitle)}</li>`;
   });
+  return li;
+}
+
+const createTodoLink = function(todoTitle){
+  return `<a href =todo${todoTitle}.JSON>${todoTitle}</a>`;
 }
 
 const changeDiv = function(){
   let data = this.responseText;
-  parseData(data);
+  let htmltext = parseData(data.split(','));
+  document.getElementById('list').innerHTML = htmltext;
 }
 
 const createTodo = function(){

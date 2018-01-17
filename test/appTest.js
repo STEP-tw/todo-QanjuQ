@@ -68,7 +68,7 @@ describe('app',()=>{
     })
 
     it('redirects to home page if user is already loggedin',(done)=>{
-      request(app,{method:'POST',url:'/login',body:'username=QanjuQ&password=0001',
+      request(app,{method:'POST',url:'/login',body:'username=anju&password=0000',
       headers:{'cookie':'login:true','sessionid':'100001'}},(res)=>{
         th.should_be_redirected_to('/home');
       });
@@ -77,8 +77,15 @@ describe('app',()=>{
   })
 
   describe('GET /login',()=>{
+    it('serves the login form',(done)=>{
+      request(app,{method:'GET',url:'/login'},(res)=>{
+        th.status_is_ok(res);
+        th.body_contains(res,'Username:<input type = "text" name = "username" id="uname">');
+      })
+      done();
+    })
     it('redirects to home page if user is already loggedin',(done)=>{
-      request(app,{method:'POST',url:'/login',
+      request(app,{method:'GET',url:'/login',
       headers:{'cookie':'login:true','sessionid':'100001'}},(res)=>{
         th.should_be_redirected_to('/home');
       });
@@ -90,9 +97,33 @@ describe('app',()=>{
     it('sets a expiring login=false cookie',(done)=>{
       request(app,{method:'GET',url:'/logout'},(res)=>{
         th.should_have_expiring_cookie(res,'login','false');
+        th.should_have_expiring_cookie(res,'sessionid','0');
         th.should_be_redirected_to(res,'/index.html');
       })
       done();
     })
   })
+
+  describe('GET todos',()=>{
+    it('gets a list of titles of todos',(done)=>{
+      request(app,{method:'GET',url:'/todos',
+      headers:{'cookie':['login=true; sessionid=100001']}},(res)=>{
+        th.status_is_ok(res);
+        console.log(res.body);
+        th.body_contains(res.body,'[]');
+      })
+      done();
+    })
+  })
+
+  describe('POST createTodo',()=>{
+    it('creates a todo with title "hello"',(done)=>{
+      request(app,{method:'POST',url:'createTodo'},(res)=>{
+
+      })
+      done();
+    })
+  })
+
+
 })
