@@ -28,21 +28,17 @@ const getUsersList = function(){
   return JSON.parse(users);
 }
 
-
-const registerUser = function(name,username,password){
-  let users = fs.readFileSync('./public/data/users.JSON','utf8');
-  users = JSON.parse(users);
-  let user = new User(username,name,password);
-  users.push(user);
-  fs.writeFileSync('./public/data/users.JSON',toS(users));
-};
-
 const loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
+  // console.log(sessionid);
   let users = getUsersList();
-  let user = users.find(u=>u.sessionid==sessionid);
-  if(sessionid && user){
-    req.user = user;
+  let present_users = Object.keys()
+  let username = present_users.filter(username=>{
+    return users[username].sessionid = sessionid;
+  });
+  let activeUser = users[username[0]];
+  if(sessionid && activeuser){
+    req.user = activeUser;
   }
 };
 
@@ -62,9 +58,16 @@ let loadData = function(){
   });
 }
 
+const redirectLoggedinUsersToHome = function(req,res){
+  if(['/login','/','/index.html'].includes(req.url) && req.user)
+    res.redirect('/home.html');
+}
+
+
 let app = WebApp.create();
 app.use(logger,'_preprocess');
 app.use(loadUser,'_preprocess');
+app.use(redirectLoggedinUsersToHome,'_preprocess');
 
 app.use(fileUtils.getFilePath,'_postprocess');
 app.use(fileUtils.getContentType,'_postprocess');
@@ -72,9 +75,10 @@ app.use(fileUtils.getContentType,'_postprocess');
 app.get('/',handlers.handleSlash);
 app.get('/logout',handlers.userLogout);
 app.get('/todos',handlers.getTodoLists);
-app.get('/login',handlers.serveLoginForm);
+app.get('/login',handlers.getLogin);
 app.post('/login',(req,res)=>{
-  handlers.userLogin(req,res,getUsersList());
+  let users = handlers.postLogin(req,res,getUsersList());
+  fs.writeFileSync(users);
 });
 app.post('/createTodo',handlers.createTodo);
 

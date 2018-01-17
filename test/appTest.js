@@ -50,7 +50,7 @@ describe('app',()=>{
 
     it('sets a message wrong password if username matches but not password',(done)=>{
       request(app,{method:'POST',url:'/login',body:'username=anju&password=0001'},(res)=>{
-        th.should_have_cookie(res,'message','wrong password');
+        th.should_have_expiring_cookie(res,'message','wrong password');
         th.should_not_have_cookie(res,'login');
         th.should_not_have_cookie(res,'sessionid');
         th.status_is_ok(res);
@@ -66,6 +66,24 @@ describe('app',()=>{
       })
     done();
     })
+
+    it('redirects to home page if user is already loggedin',(done)=>{
+      request(app,{method:'POST',url:'/login',body:'username=QanjuQ&password=0001',
+      headers:{'cookie':'login:true','sessionid':'100001'}},(res)=>{
+        th.should_be_redirected_to('/home');
+      });
+      done();
+    })
+  })
+
+  describe('GET /login',()=>{
+    it('redirects to home page if user is already loggedin',(done)=>{
+      request(app,{method:'POST',url:'/login',
+      headers:{'cookie':'login:true','sessionid':'100001'}},(res)=>{
+        th.should_be_redirected_to('/home');
+      });
+      done();
+    })
   })
 
   describe('GET /logout',()=>{
@@ -76,6 +94,5 @@ describe('app',()=>{
       })
       done();
     })
-
   })
 })
