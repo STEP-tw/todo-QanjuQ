@@ -7,7 +7,7 @@ let parseData = function(todoslist){
 }
 
 const createTodoLink = function(todoTitle){
-  return `<a href =todo${todoTitle}.JSON>${todoTitle}</a>`;
+  return `<a href = usertodo${todoTitle}.JSON>${todoTitle}</a>`;
 }
 
 const changeDiv = function(){

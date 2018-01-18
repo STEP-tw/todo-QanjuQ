@@ -54,10 +54,49 @@ const redirectLoggedinUsersToHome = function(req,res){
   }
 }
 
+const isTodoFile = function(file){
+  return file.startsWith('/usertodo');
+}
+
+const getTodoUrl = function(file){
+  return file.slice(9);
+}
+
+
+const toHtml = function(itemData){
+  let data = '';
+  let keys = Object.keys(itemData);
+  keys.reduce((key)=>{
+    return `${key}=${todo[key]}&`
+  },data);
+}
+
+const replace = function(toBeReplaced,toReplace,replaceWith){
+  return toBeReplaced.replace('TITLE',`<h1>${todoContent["title"]}</h1>`);
+}
+
+const serverTodoFile = function(req,res){
+  let url = req.url;
+  if(isTodoFile(url)){
+    let username = req.user.username;
+    url = `./public/data/${username}/${getTodoUrl(url)}`;
+    let content = fs.readFileSync('./public/todo.html','utf8');
+    let todoContent = fs.readFileSync(url,'utf8');
+    todoContent = JSON.parse(todoContent);
+    content = replace(content,'TITLE',`<h1>${todoContent["title"]}</h1>`);
+    content = replace(content,'DESCRIPTION',`${todoContent["description"]}`);
+    content = replace(content,'ITEMS',toHtml(todoContent.items));
+    res.statusCode = 200;
+    res.setHeader('Content-Type','text/html');
+    res.write(content);
+    res.end();
+  }
+}
 
 let app = WebApp.create();
 app.use(logger,'_preprocess');
 app.use(loadUser,'_preprocess');
+app.use(serverTodoFile,'_preprocess');
 app.use(redirectLoggedinUsersToHome,'_preprocess');
 
 app.use(fileUtils.getFilePath,'_postprocess');
